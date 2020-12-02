@@ -1,0 +1,347 @@
+openapi: 3.0.3
+info:
+  title: openapi
+  version: v1
+servers:
+  - url: http://localhost:8080/api/v1
+paths:
+  '/users/current':
+    get:
+      operationId: getUserCurrent
+      tags: [ users-api-controller ]
+      responses:
+        200:
+          $ref: '#/components/responses/GetUserCurrentResponse'
+    put:
+      operationId: updateUserCurrent
+      tags: [ users-api-controller ]
+      requestBody:
+        $ref: '#/components/requestBodies/PutUserCurrentUpdateRequest'
+      responses:
+        200:
+          description: successfully
+  '/users/current/password':
+    patch:
+      operationId: updateUserCurrentPassword
+      tags: [ users-api-controller ]
+      requestBody:
+        $ref: '#/components/requestBodies/PatchUserUpdatePasswordRequest'
+      responses:
+        200:
+          description: successfully
+  '/users/current/image':
+    get:
+      operationId: getUserCurrentImage
+      tags: [ users-api-controller ]
+      responses:
+        200:
+          $ref: '../common.yaml#/components/responses/FileResponse'
+    patch:
+      operationId: updateUserCurrentImage
+      tags: [ users-api-controller ]
+      requestBody:
+        $ref: '../common.yaml#/components/requestBodies/FileRequest'
+      responses:
+        200:
+          description: successfully
+  '/users':
+    get:
+      operationId: getUserPage
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Size'
+        - $ref: '#/components/parameters/Activated'
+        - $ref: '#/components/parameters/Keyword'
+      tags: [ users-api-controller ]
+      responses:
+        200:
+          $ref: '#/components/responses/GetUserPageResponse'
+    post:
+      operationId: createUser
+      tags: [ users-api-controller ]
+      requestBody:
+        $ref: '#/components/requestBodies/PostUserCreateRequest'
+      responses:
+        200:
+          description: successfully
+  '/users/{userId}':
+    get:
+      operationId: getUser
+      tags: [ users-api-controller ]
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        200:
+          $ref: '#/components/responses/GetUserResponse'
+    put:
+      operationId: updateUser
+      tags: [ users-api-controller ]
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        $ref: '#/components/requestBodies/PutUserUpdateRequest'
+      responses:
+        200:
+          description: successfully
+  '/users/{userId}/password':
+    patch:
+      operationId: updateUserPassword
+      tags: [ users-api-controller ]
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        $ref: '#/components/requestBodies/PatchUserUpdatePasswordRequest'
+      responses:
+        200:
+          description: successfully
+components:
+  parameters:
+    Page:
+      name: page
+      in: query
+      required: true
+      schema:
+        type: integer
+        format: int32
+    Size:
+      name: size
+      in: query
+      required: true
+      schema:
+        type: integer
+        format: int32
+    Activated:
+      name: activated
+      in: query
+      required: false
+      schema:
+        type: boolean
+    Keyword:
+      name: keyword
+      in: query
+      required: true
+      schema:
+        type: string
+    UserId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+  requestBodies:
+    PutUserCurrentUpdateRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserCurrentUpdateRequest'
+    PostUserCreateRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserCreateRequest'
+    PutUserUpdateRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserUpdateRequest'
+    PatchUserUpdatePasswordRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserUpdatePasswordRequest'
+  responses:
+    GetUserCurrentResponse:
+      description: GetUserCurrentResponse
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserCurrentResponse'
+    GetUserPageResponse:
+      description: GetUserCurrentResponse
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserPageResponse'
+    GetUserResponse:
+      description: GetUserCurrentResponse
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserResponse'
+  schemas:
+    # Request
+    UserCurrentUpdateRequest:
+      type: object
+      required:
+        - username
+        - email
+        - fullName
+        - phoneNumber
+        - gender
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        fullName:
+          type: string
+        phone_number:
+          type: string
+        gender:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 2
+          description: >
+            gender:
+              * `0` - Female - Nữ
+              * `1` - Male - Nam
+              * `2` - Khác
+    UserCreateRequest:
+      type: object
+      required:
+        - username
+        - email
+        - fullName
+        - phoneNumber
+        - gender
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        fullName:
+          type: string
+        phoneNumber:
+          type: string
+        gender:
+          type: integer
+          minimum: 0
+          maximum: 2
+          description: >
+            gender:
+              * `0` - Female - Nữ
+              * `1` - Male - Nam
+              * `2` - Khác
+        roles:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+    UserUpdateRequest:
+      type: object
+      required:
+        - username
+        - email
+        - fullName
+        - phoneNumber
+        - gender
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        fullName:
+          type: string
+        phoneNumber:
+          type: string
+        gender:
+          type: integer
+          minimum: 0
+          maximum: 2
+          description: >
+            gender:
+              * `0` - Female - Nữ
+              * `1` - Male - Nam
+              * `2` - Khác
+        roles:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+    UserUpdatePasswordRequest:
+      required:
+        - passwordOld
+        - passwordNew
+      type: object
+      properties:
+        passwordOld:
+          type: string
+          format: password
+        passwordNew:
+          type: string
+          format: password
+
+    # Response
+    UserCurrentResponse:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        fullName:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+    UserPageResponse:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserDTO'
+    UserResponse:
+      $ref: '#/components/schemas/UserDTO'
+
+    # DTO
+    UserDTO:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        fullName:
+          type: string
+        phone_number:
+          type: string
+        gender:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 2
+          description: >
+            gender:
+              * `0` - Female - Nữ
+              * `1` - Male - Nam
+              * `2` - Khác
+        activated:
+          type: boolean
+        roles:
+          type: array
+          items:
+            type: string
+          uniqueItems: true

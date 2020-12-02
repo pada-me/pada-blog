@@ -1,0 +1,42 @@
+server:
+  port: 9999
+
+spring:
+  datasource:
+    driverClassName: org.h2.Driver
+    username: root
+    password:
+    url: jdbc:h2:file:./blog
+  jpa:
+    show-sql: true
+    openInView: false
+    hibernate:
+      ddl-auto: none
+  h2:
+    console:
+      enabled: true
+      path: /h2
+
+security:
+  oauth2:
+    client:
+      client-id: client-id
+      client-secret: client-secret
+      scope: openid
+      access-token-validity-seconds: 604800  # 7 days
+      refresh-token-validity-seconds: 604800  # 7 days
+      resource-ids: blog-service
+    authorization:
+      jwt:
+        key-value: UhIdJGEGzC6uhpmRFnOKDfUEMfn9g9LCuqx7wvY2sDeW9RFAto43QNsmR5UXqyTAx4UXX8ohvAapAUIyU4zatlpkomFNwUXAMVY
+      token-key-access: permitAll()
+
+logging:
+  pattern:
+    dateformat: yyyy-MM-dd'T'HH:mm:ssZ
+
+pada-config:
+  cors:
+    allowed-origins: '*'
+    allowed-methods: '*'
+    allowed-headers: '*'

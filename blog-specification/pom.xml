@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>me.pada.core</groupId>
+		<artifactId>pada-spec-starter-parent</artifactId>
+		<version>1.0.0</version>
+		<relativePath/>
+	</parent>
+
+	<groupId>me.pada.blog.specification</groupId>
+	<artifactId>blog-specification</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>blog-specification</name>
+
+	<properties>
+		<blog-spec.version>v1</blog-spec.version>
+		<codegen.package-name>blog.${blog-spec.version}</codegen.package-name>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>execution-api-user</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${codegen.input-spec}/user/api.yaml</inputSpec>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
